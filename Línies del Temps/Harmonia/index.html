@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Línia del Temps de l'Harmonia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Estils Generals i Nova Paleta de Colors */
+        :root {
+            --color-fons-inici: #c1a27c;
+            --color-fons-fi: #e0d5c6;
+            --color-vidre: rgba(255, 255, 255, 0.2);
+            --color-vidre-vora: rgba(255, 255, 255, 0.35);
+            --color-text-principal: #3a2e20;
+            --color-text-secundari: #604d3a;
+            --color-ombra: rgba(70, 50, 30, 0.1);
+            
+            --color-epoca: #fdfaf6;
+            --color-epoca-vora: #dcd1c1;
+            
+            --color-correcte-fons: #f0fdf4;
+            --color-correcte-vora: #4ade80;
+            --color-incorrecte-fons: #fef2f2;
+            --color-incorrecte-vora: #f87171;
+
+            --color-accent: #e49c4a;
+            --color-boto-principal: #b37439;
+            --color-boto-principal-hover: #9a602a;
+            --radi-arrodonit: 16px;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, var(--color-fons-inici), var(--color-fons-fi));
+            color: var(--color-text-principal);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* Contenidor Principal del Joc */
+        #contenidor-joc {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1300px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem;
+            font-weight: 700;
+            margin: 0;
+            color: #fff;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        #instruccions {
+            font-size: 1.2rem;
+            color: #fdfaf6;
+            margin-top: 10px;
+            min-height: 40px;
+            transition: color 0.3s ease;
+            font-weight: 400;
+        }
+
+        /* Àrea de Joc Principal */
+        #area-joc {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        /* Panells amb efecte vidre */
+        .panell {
+            background: var(--color-vidre);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid var(--color-vidre-vora);
+            border-radius: var(--radi-arrodonit);
+            padding: 25px;
+            box-shadow: 0 8px 32px 0 var(--color-ombra);
+        }
+
+        #area-linia-temps {
+            width: 58%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #linia-temps {
+            width: 100%;
+        }
+
+        #piscina-targetes {
+            width: 38%;
+            position: sticky;
+            top: 20px;
+        }
+
+        .slot-linia {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 2px dashed var(--color-vidre-vora);
+            border-radius: 12px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            min-height: 80px;
+        }
+
+        .slot-linia.drag-over {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-color: var(--color-accent);
+        }
+
+        .numero-slot {
+            font-size: 1.8rem;
+            font-weight: 800;
+            font-family: 'Playfair Display', serif;
+            color: rgba(255, 255, 255, 0.6);
+            margin-right: 20px;
+            min-width: 30px;
+            text-align: center;
+            line-height: 1;
+            padding-top: 5px;
+        }
+        
+        h2 {
+            margin-top: 0;
+            text-align: center;
+            color: #fff;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        /* Targetes Redissenyades */
+        .targeta {
+            padding: 12px 18px;
+            border-radius: 10px;
+            cursor: grab;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, border-color 0.3s ease;
+            user-select: none;
+            border: 1px solid;
+            box-shadow: 0 4px 6px var(--color-ombra);
+            margin-bottom: 10px;
+            background-color: var(--color-epoca);
+            border-color: var(--color-epoca-vora);
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .targeta-titol {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        
+        .targeta-resum {
+            font-weight: 400;
+            font-size: 0.85rem;
+            color: var(--color-text-secundari);
+            margin-top: 4px;
+        }
+
+        .targeta:last-child {
+            margin-bottom: 0;
+        }
+
+        .targeta.dragging {
+            opacity: 0.8;
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 12px 24px rgba(70, 50, 30, 0.2);
+            cursor: grabbing;
+        }
+        
+        .targeta.colocada {
+            cursor: default;
+        }
+
+        .targeta.correcta {
+            background-color: var(--color-correcte-fons);
+            border-color: var(--color-correcte-vora);
+        }
+        
+        .targeta.incorrecta {
+            background-color: var(--color-incorrecte-fons);
+            border-color: var(--color-incorrecte-vora);
+        }
+
+        /* Botons */
+        .boto {
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+        
+        #boto-comprovar {
+            background-color: var(--color-boto-principal);
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(179, 116, 57, 0.3);
+        }
+        
+        #boto-comprovar:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(179, 116, 57, 0.4);
+            background-color: var(--color-boto-principal-hover);
+        }
+        
+        #boto-comprovar:disabled {
+            background-color: #d4b291;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Missatge de Victòria */
+        #missatge-final {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(58, 46, 32, 0.8);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #missatge-final-contingut {
+            background: linear-gradient(135deg, #fdfbfb, #ebedee);
+            padding: 50px;
+            border-radius: var(--radi-arrodonit);
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            transform: scale(0.8);
+            animation: popup 0.5s forwards cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+        
+        @keyframes popup {
+            to { transform: scale(1); }
+        }
+
+        #missatge-final-contingut h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: transparent;
+            background: linear-gradient(45deg, #22c55e, #65a30d);
+            -webkit-background-clip: text;
+            margin: 0 0 10px 0;
+        }
+        
+        #missatge-final-contingut p {
+            font-size: 1.3rem;
+            color: var(--color-text-secundari);
+        }
+
+        #boto-reiniciar {
+            background: linear-gradient(45deg, #22c55e, #4ade80);
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+        }
+        
+        #boto-reiniciar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(34, 197, 94, 0.4);
+        }
+        
+        /* Disseny Responsable */
+        @media (max-width: 950px) {
+            #area-joc {
+                flex-direction: column;
+                gap: 20px;
+            }
+            #area-linia-temps, #piscina-targetes {
+                width: 100%;
+                box-sizing: border-box;
+            }
+            #piscina-targetes {
+                position: static;
+            }
+            h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="contenidor-joc">
+        <header>
+            <h1>La Línia del Temps de l'Harmonia</h1>
+            <p id="instruccions">Arrossega cada època a la seva posició per ordenar la línia del temps.</p>
+        </header>
+
+        <main id="area-joc">
+            <section id="area-linia-temps" class="panell">
+                <div id="linia-temps">
+                    <!-- Les zones per deixar anar es generaran amb JavaScript -->
+                </div>
+                <button id="boto-comprovar" class="boto" disabled>Comprovar</button>
+            </section>
+            <aside id="piscina-targetes" class="panell">
+                <h2>Èpoques per ordenar</h2>
+                <div id="contenidor-piscina">
+                    <!-- Les targetes per arrossegar es generaran amb JavaScript -->
+                </div>
+            </aside>
+        </main>
+    </div>
+    
+    <div id="missatge-final">
+        <div id="missatge-final-contingut">
+            <h2 id="missatge-titol">Enhorabona!</h2>
+            <p id="missatge-text">Has completat la línia del temps perfectament.</p>
+            <button id="boto-reiniciar" class="boto">Torna a Jugar</button>
+        </div>
+    </div>
+
+
+    <script>
+        const dadesHistoria = [
+          { ordre: 1, epoca: "Edat Mitjana (s. IX – XV)", fraseResum: "Apareixen les primeres veus paral·leles (organum)." },
+          { ordre: 2, epoca: "Renaixement (s. XV – XVI)", fraseResum: "Moltes veus independents s'entrellacen de forma equilibrada." },
+          { ordre: 3, epoca: "Barroc (s. XVII – inici del XVIII)", fraseResum: "Neix l'harmonia funcional amb acords majors i menors." },
+          { ordre: 4, epoca: "Classicisme (s. XVIII)", fraseResum: "Harmonia clara i ordenada, basada en la tensió i resolució." },
+          { ordre: 5, epoca: "Romanticisme (s. XIX)", fraseResum: "L'harmonia es fa rica i expressiva per crear emoció." },
+          { ordre: 6, epoca: "Segle XX i avantguarda (1900–1970)", fraseResum: "Es trenca el sistema tonal i s'exploren nous sons (jazz, atonalisme)." },
+          { ordre: 7, epoca: "Del 1970 al 2010: Simplicitat i color", fraseResum: "L'harmonia es simplifica en el pop (4 acords) o es fa ambiental." },
+          { ordre: 8, epoca: "Del 2010 fins avui: Harmonia minimalista", fraseResum: "Harmonia minimalista i atmosfèrica, al servei del ritme." }
+        ];
+
+        // Referències al DOM
+        const liniaTempsEl = document.getElementById('linia-temps');
+        const piscinaTargetesEl = document.getElementById('contenidor-piscina');
+        const botoComprovarEl = document.getElementById('boto-comprovar');
+        const missatgeFinalEl = document.getElementById('missatge-final');
+        const botoReiniciarEl = document.getElementById('boto-reiniciar');
+        const missatgeTitolEl = document.getElementById('missatge-titol');
+        const missatgeTextEl = document.getElementById('missatge-text');
+
+        // Estat del joc
+        let targetaArrossegada = null;
+        let targetesColocades = 0;
+
+        function barrejarArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function iniciarJoc() {
+            targetesColocades = 0;
+            liniaTempsEl.innerHTML = '';
+            piscinaTargetesEl.innerHTML = '';
+            missatgeFinalEl.style.display = 'none';
+            botoComprovarEl.disabled = true;
+            botoComprovarEl.style.display = 'block';
+
+            // Crear slots
+            for (let i = 1; i <= dadesHistoria.length; i++) {
+                const slot = document.createElement('div');
+                slot.classList.add('slot-linia');
+                slot.dataset.ordre = i;
+                slot.innerHTML = `<span class="numero-slot">${i}</span>`;
+                liniaTempsEl.appendChild(slot);
+                
+                slot.addEventListener('dragover', onDragOver);
+                slot.addEventListener('dragleave', onDragLeave);
+                slot.addEventListener('drop', onDrop);
+            }
+
+            // Crear targetes
+            const epoquesBarrejades = [...dadesHistoria];
+            barrejarArray(epoquesBarrejades);
+
+            epoquesBarrejades.forEach(item => {
+                const targeta = document.createElement('div');
+                targeta.className = 'targeta';
+                targeta.setAttribute('draggable', 'true');
+                targeta.dataset.ordre = item.ordre;
+                targeta.innerHTML = `
+                    <div class="targeta-titol">${item.epoca}</div>
+                    <div class="targeta-resum">${item.fraseResum}</div>
+                `;
+                piscinaTargetesEl.appendChild(targeta);
+
+                targeta.addEventListener('dragstart', onDragStart);
+                targeta.addEventListener('dragend', onDragEnd);
+            });
+            
+            piscinaTargetesEl.addEventListener('dragover', onDragOver);
+            piscinaTargetesEl.addEventListener('dragleave', onDragLeave);
+            piscinaTargetesEl.addEventListener('drop', onDrop);
+        }
+
+        // --- GESTIÓ D'ESDEVENIMENTS DRAG & DROP ---
+
+        function onDragStart(event) {
+            targetaArrossegada = event.target;
+            setTimeout(() => event.target.classList.add('dragging'), 0);
+        }
+
+        function onDragEnd(event) {
+            event.target.classList.remove('dragging');
+            targetaArrossegada = null;
+        }
+
+        function onDragOver(event) {
+            event.preventDefault();
+            const zonaDesti = event.currentTarget;
+            if (zonaDesti.classList.contains('slot-linia') && zonaDesti.children.length < 2) {
+                 zonaDesti.classList.add('drag-over');
+            }
+             if (zonaDesti.id === 'contenidor-piscina') {
+                 zonaDesti.classList.add('drag-over');
+            }
+        }
+        
+        function onDragLeave(event) {
+            event.currentTarget.classList.remove('drag-over');
+        }
+
+        function onDrop(event) {
+            event.preventDefault();
+            const zonaDesti = event.currentTarget;
+            zonaDesti.classList.remove('drag-over');
+
+            if (!targetaArrossegada) return;
+            
+            const origenEraSlot = targetaArrossegada.parentElement.classList.contains('slot-linia');
+            
+            // Si es mou a un slot buit
+            if (zonaDesti.classList.contains('slot-linia') && zonaDesti.children.length < 2) {
+                const numeroSlot = zonaDesti.querySelector('.numero-slot');
+                zonaDesti.insertBefore(targetaArrossegada, numeroSlot.nextSibling);
+                if (!origenEraSlot) targetesColocades++;
+            }
+            // Si es retorna a la piscina
+            else if (zonaDesti.id === 'contenidor-piscina') {
+                zonaDesti.appendChild(targetaArrossegada);
+                if (origenEraSlot) targetesColocades--;
+            }
+            
+            // Activar/desactivar el botó de comprovar
+            botoComprovarEl.disabled = targetesColocades < dadesHistoria.length;
+        }
+
+        // --- LÒGICA DE COMPROVACIÓ ---
+        
+        function comprovarRespostes() {
+            let encerts = 0;
+            const slots = liniaTempsEl.querySelectorAll('.slot-linia');
+            
+            slots.forEach(slot => {
+                const targeta = slot.querySelector('.targeta');
+                if (targeta) {
+                    const ordreSlot = slot.dataset.ordre;
+                    const ordreTargeta = targeta.dataset.ordre;
+                    
+                    targeta.classList.remove('correcta', 'incorrecta'); // Netejar classes prèvies
+                    if (ordreSlot === ordreTargeta) {
+                        targeta.classList.add('correcta');
+                        encerts++;
+                    } else {
+                        targeta.classList.add('incorrecta');
+                    }
+                    targeta.setAttribute('draggable', 'false'); // Bloquejar targetes
+                }
+            });
+            
+            botoComprovarEl.style.display = 'none'; // Amagar botó després de comprovar
+            
+            // Mostrar missatge final
+            if (encerts === dadesHistoria.length) {
+                missatgeTitolEl.textContent = "Enhorabona!";
+                missatgeTextEl.textContent = `Perfecte! Has ordenat totes les èpoques correctament.`;
+            } else {
+                missatgeTitolEl.textContent = "Gairebé ho tens!";
+                missatgeTextEl.textContent = `Has encertat ${encerts} de ${dadesHistoria.length}. Torna-ho a provar per aconseguir el 100%!`;
+            }
+            setTimeout(() => missatgeFinalEl.style.display = 'flex', 1000);
+        }
+        
+        botoComprovarEl.addEventListener('click', comprovarRespostes);
+        botoReiniciarEl.addEventListener('click', iniciarJoc);
+
+        // Iniciar el joc
+        document.addEventListener('DOMContentLoaded', iniciarJoc);
+
+    </script>
+</body>
+</html>
