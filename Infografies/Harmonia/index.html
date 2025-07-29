@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Història de l'Harmonia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Estils personalitzats inspirats en Assassin's Creed Animus UI */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A; /* Fons blau fosc (slate-900) */
+            background-image: 
+                linear-gradient(rgba(15, 23, 42, 0.97), rgba(15, 23, 42, 0.97)),
+                url('https://www.transparenttextures.com/patterns/hexellence.png'); /* Fons subtil tecnològic */
+            color: #E2E8F0; /* Color de text principal (slate-200) */
+        }
+
+        /* Tipografia per als títols, similar a la del joc */
+        .font-assassin {
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Efecte de "glitch" per al logo */
+        .glitch-logo {
+            position: relative;
+            animation: glitch-anim 5s infinite steps(1);
+        }
+
+        @keyframes glitch-anim {
+            0%, 100% { transform: none; opacity: 1; }
+            10% { transform: translate(-3px, 2px); }
+            25% { transform: translate(3px, -2px); }
+            40% { transform: skewX(5deg) translate(-2px, 1px); }
+            50% { transform: none; }
+            65% { opacity: 0.8; filter: blur(0.5px); }
+            80% { transform: skewX(-5deg) translate(2px, -1px); }
+        }
+
+        /* Estil de les targetes de memòria (èpoques) */
+        .era-card {
+            background-color: rgba(30, 41, 59, 0.5); /* Fons de targeta (slate-800 amb transparència) */
+            backdrop-filter: blur(6px);
+            border: 1px solid #334155; /* Vora (slate-700) */
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            border-radius: 0.5rem;
+            overflow: hidden; /* Per contenir els pseudo-elements */
+            padding: 1.5rem 1.5rem 1.5rem 2.5rem; /* Espai per a la barra lateral */
+        }
+
+        /* Barra lateral de les targetes */
+        .era-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 8px;
+            background-color: rgba(71, 85, 105, 0.6); /* Barra gris-blavosa neutra (slate-600) */
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Efecte de hover a les targetes */
+        .era-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            border-color: rgba(59, 130, 246, 0.6); /* Vora blava de selecció (blue-500) */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .era-card:hover::before {
+            background-color: #3B82F6; /* Barra blava de selecció */
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.7);
+        }
+        
+        .era-title {
+            color: #60A5FA; /* Blau clar per als títols (blue-400) */
+        }
+
+        /* Animació d'entrada per als elements */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in-item {
+            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 sm:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Capçalera -->
+        <header class="text-center mb-12 md:mb-16">
+            <!-- Logo inspirat en Assassin's Creed -->
+            <div class="glitch-logo w-16 h-16 mx-auto mb-4">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-gray-300">
+                    <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    <path d="M12 12L22 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 12V22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 12L2 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M17 4.5L7 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h1 class="font-assassin text-4xl sm:text-5xl md:text-6xl font-bold tracking-wider text-gray-100 uppercase">Història de l'Harmonia</h1>
+            <p class="text-gray-400 mt-2 text-lg">De l’Edat Mitjana fins avui</p>
+        </header>
+
+        <!-- Graella de memòries (èpoques) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+            
+            <!-- 1. Edat Mitjana -->
+            <div class="fade-in-item era-card" style="animation-delay: 0.1s;">
+                <h2 class="font-assassin text-2xl font-bold era-title mb-3">1. Edat Mitjana <span class="text-gray-400 font-sans text-xl">(s. IX – XV)</span></h2>
+                <ul class="list-disc list-inside space-y-2 text-slate-300">
+                    <li>Al principi només hi havia melodia monofònica (cant gregorià).</li>
+                    <li>Apareix l'organum (segona veu en paral·lel).</li>
+                    <li>Es desenvolupa la polifonia (diverses veus independents).</li>
+                </ul>
+                <p class="mt-4 text-lg"><span class="text-xl mr-2">🔍</span> <strong class="text-slate-100">Exemple:</strong> Dues veus cantant a distància de 4a o 5a.</p>
+            </div>
+
+            <!-- 2. Renaixement -->
+            <div class="fade-in-item era-card" style="animation-delay: 0.2s;">
+                <h2 class="font-assassin text-2xl font-bold era-title mb-3">2. Renaixement <span class="text-gray-400 font-sans text-xl">(s. XV – XVI)</span></h2>
+                <ul class="list-disc list-inside space-y-2 text-slate-300">
+                    <li>Gran desenvolupament de la polifonia vocal equilibrada.</li>
+                    <li>Consonàncies i dissonàncies controlades.</li>
+                    <li>L’harmonia suggereix tonalitat, però sense jerarquia clara.</li>
+                </ul>
+                <p class="mt-4 text-lg"><span class="text-xl mr-2">🎤</span> <strong class="text-slate-100">Exemple:</strong> Música de Palestrina o Josquin.</p>
+            </div>
+
+            <!-- 3. Barroc -->
+            <div class="fade-in-item era-card" style="animation-delay: 0.3s;">
+                <h2 class="font-assassin text-2xl font-bold era-title mb-3">3. Barroc <span class="text-gray-400 font-sans text-xl">(s. XVII – inici XVIII)</span></h2>
+                <ul class="list-disc list-inside space-y-2 text-slate-300">
+                    <li>Naixement de l’harmonia funcional (sistema tonal).</li>
+                    <li>Apareixen els acords majors/menors amb funcions.</li>
+                    <li>Es forma el baix continu, que guia tota l’harmonia.</li>
+                </ul>
+                <p class="mt-4 text-lg"><span class="text-xl mr-2">🎻</span> <strong class="text-slate-100">Exemple:</strong> Acords d’un preludi de Bach.</p>
+            </div>
+
+            <!-- 4. Classicisme -->
+            <div class="fade-in-item era-card" style="animation-delay: 0.4s;">
+                <h2 class="font-assassin text-2xl font-bold era-title mb-3">4. Classicisme <span class="text-gray-400 font-sans text-xl">(s. XVIII)</span></h2>
+                <ul class="list-disc list-inside space-y-2 text-slate-300">
+                    <li>Harmonia clara, ordenada i lògica.</li>
+                    <li>Acords per crear tensió i resolució (tònica–dominant–tònica).</li>
+                    <li>Progressions harmòniques regulars.</li>
+                </ul>
+                <p class="mt-4 text-lg"><span class="text-xl mr-2">🎼</span> <strong class="text-slate-100">Exemple:</strong> Sonata clàssica de Mozart.</p>
+            </div>
+
+            <!-- 5. Romanticisme -->
+            <div class="fade-in-item era-card" style="animation-delay: 0.5s;">
+                <h2 class="font-assassin text-2xl font-bold era-title mb-3">5. Romanticisme <span class="text-gray-400 font-sans text-xl">(s. XIX)</span></h2>
+                <ul class="list-disc list-inside space-y-2 text-slate-300">
+                    <li>Harmonia més rica, expressiva i cromàtica.</li>
+                    <li>Ús d'acords nous i modulacions freqüents.</li>
+                    <li>Expressa emocions, tensió i sorpresa.</li>
+                </ul>
+                <p class="mt-4 text-lg"><span class="text-xl mr-2">🎶</span> <strong class="text-slate-100">Exemple:</strong> Harmonia de Chopin o Wagner.</p>
+            </div>
+            
+            <!-- 6. Segle XX i avantguarda -->
+            <div class="fade-in-item era-card" style="animation-delay: 0.6s;">
+                <h2 class="font-assassin text-2xl font-bold era-title mb-3">6. Segle XX <span class="text-gray-400 font-sans text-xl">(1900–1970)</span></h2>
+                <ul class="list-disc list-inside space-y-2 text-slate-300">
+                    <li>Es trenca el sistema tonal tradicional (atonalisme).</li>
+                    <li>Noves escales, modes i acords complexos.</li>
+                    <li>Jazz: acords de 9a, 11a, 13a i substitucions.</li>
+                </ul>
+                <p class="mt-4 text-lg"><span class="text-xl mr-2">🔊</span> <strong class="text-slate-100">Exemple:</strong> Acords de jazz o música de Debussy.</p>
+            </div>
+
+            <!-- 7. Del 1970 al 2010 -->
+            <div class="fade-in-item era-card" style="animation-delay: 0.7s;">
+                <h2 class="font-assassin text-2xl font-bold era-title mb-3">7. Color i Diversitat <span class="text-gray-400 font-sans text-xl">(1970–2010)</span></h2>
+                <ul class="list-disc list-inside space-y-2 text-slate-300">
+                    <li>En pop/rock, l’harmonia es simplifica (acords bàsics).</li>
+                    <li>Jazz-fusió i rock progressiu mantenen harmonia rica.</li>
+                    <li>En electrònica, es prioritza la textura i l'ambient.</li>
+                </ul>
+                <p class="mt-4 text-lg"><span class="text-xl mr-2">🎧</span> <strong class="text-slate-100">Exemple:</strong> Progressions complexes per al jazz com harmonies senzilles per al pop.</p>
+            </div>
+            
+            <!-- 8. Del 2010 fins avui -->
+            <div class="fade-in-item era-card" style="animation-delay: 0.8s;">
+                <h2 class="font-assassin text-2xl font-bold era-title mb-3">8. Harmonia Minimalista <span class="text-gray-400 font-sans text-xl">(2010–Avui)</span></h2>
+                <ul class="list-disc list-inside space-y-2 text-slate-300">
+                    <li>En trap/urbana, es basa en progressions repetides.</li>
+                    <li>Harmonia senzilla per donar espai al ritme i la veu.</li>
+                    <li>Sons sintètics (pads, 808) creen climes i ambients.</li>
+                </ul>
+                <p class="mt-4 text-lg"><span class="text-xl mr-2">🔥</span> <strong class="text-slate-100">Exemples:</strong> Cançons pop amb 4 acords (I–V–vi–IV), Rosalía, Billie Eilish.</p>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
